@@ -40,7 +40,7 @@ def transcribe_with_whisper_cpp(audio_path, model_path="models/ggml-base.en.bin"
 
 # === Main ===
 if __name__ == "__main__":
-    video_path = "../video/input.mp4"
+    video_path = "../video/sample.mp4"
     audio_path = "output.wav"
     output_json = "whisper_transcription.json"
     model_path = "../../whisper.cpp/models/ggml-base.en.bin"

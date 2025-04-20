@@ -10,6 +10,7 @@ import os
 import io
 import base64
 import time
+import subprocess
 
 # Function to load JSON files
 def load_json_file(file_path):
@@ -23,49 +24,56 @@ def load_json_file(file_path):
     except Exception as e:
         raise Exception(f"Error loading {file_path}: {str(e)}")
 
-# Construct absolute paths to JSON files
-script_dir = os.path.dirname(os.path.abspath(__file__))
-sentiment_file = os.path.join(script_dir, "sentiment.json")
-relevance_file = os.path.join(script_dir, "relevance.json")
-
-# Load sentiment and relevance data
-try:
-    sentiment_data = load_json_file(sentiment_file)
-    relevance_data = load_json_file(relevance_file)
-except Exception as e:
-    print(f"Error: {str(e)}")
-    exit(1)
-
 # === Practice Questions ===
 questions_practice_mode = [
-    "Tell me about yourself.",
-    "Why do you want this role?",
-    "Describe a time you handled a challenge at work.",
-    "What are your greatest strengths?",
-    "What is your biggest weakness?",
-    "Where do you see yourself in 5 years?",
-    "Why should we hire you?",
-    "How do you handle pressure and deadlines?",
-    "Give an example of teamwork in your past roles.",
-    "What motivates you to perform well?"
+    # "Tell me about yourself.",
+    # "Why do you want this role?",
+    # "Describe a time you handled a challenge at work.",
+    # "What are your greatest strengths?",
+    # "What is your biggest weakness?",
+    # "Where do you see yourself in 5 years?",
+    # "Why should we hire you?",
+    # "How do you handle pressure and deadlines?",
+    # "Give an example of teamwork in your past roles.",
+    # "What motivates you to perform well?"
+    "Tell me about a time you disagreed with your boss."
 ]
 
 # === Interview Questions ===
 interview_questions_list = [
-    "What excites you about working at TechNova Inc?",
-    "How would you handle a situation where a project deadline is at risk?",
-    "Describe a technical decision you made and what trade-offs were involved.",
-    "How do you stay updated with current trends in our industry?",
-    "Walk me through how you would approach leading a new team."
+    # "What excites you about working at TechNova Inc?",
+    # "How would you handle a situation where a project deadline is at risk?",
+    # "Describe a technical decision you made and what trade-offs were involved.",
+    # "How do you stay updated with current trends in our industry?",
+    # "Walk me through how you would approach leading a new team."
+    "Tell me about a time you disagreed with your boss."
 ]
 
 def get_random_question():
     return random.choice(questions_practice_mode)
 
 def dummy_submit(video, question):
+    # Construct absolute paths to JSON files
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    sentiment_file = os.path.join(script_dir, "sentiment_summary.json")
+    relevance_file = os.path.join(script_dir, "evaluation_output.json")
+
+    # Load sentiment and relevance data
+    try:
+        sentiment_data = load_json_file(sentiment_file)
+        relevance_data = load_json_file(relevance_file)
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        exit(1)
+
     # Extract data from JSON
     sentiment = round(sentiment_data.get("average_sentiment_score", 0) / 10)  # Scale to 0-10
-    relevance = round(relevance_data.get("score", 0) / 10)  # Scale to 0-10
+    if sentiment < 0:
+        sentiment = 0
+    try:
+        relevance = round(relevance_data.get("score", 0) / 10)  # Scale to 0-10
+    except:
+        relevance = 0 
     final_score = round((sentiment + relevance) / 2)
     score = f"{final_score}/10"
     rank = "Top 5% applicant" if final_score >= 8 else "Needs improvement"
@@ -196,7 +204,15 @@ def dummy_submit(video, question):
 
 def save_video(video_path, question):
     if video_path:
-        shutil.copy(video_path, "input.mp4")
+        shutil.copy(video_path, "../video/sample.mp4")
+    
+    # Run the bash script
+    try:
+        subprocess.run(["bash", "../run.sh"], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Error running run.sh: {e}")
+        return "Error running backend process", "", None, "", "", "", ""
+    
     return dummy_submit(video_path, question)
 
 def run_interview(index, time_left, timer_active, skip=False):
