@@ -11,6 +11,7 @@ git clone https://github.com/aditya-sahasrabuddhe/hackathon.git
 2. Setup all the dependancies
 
 ```
+cd hackathon
 bash setup.sh
 ```
 

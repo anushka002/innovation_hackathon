@@ -142,9 +142,9 @@ def dummy_submit(video, question):
 
     # Create insights text
     insights = (
-        f"<b>Insights:</b><br>"
-        f"<b>Relevance Observation:</b> {relevance_data.get('observation', 'No observation available.')}<br>"
-        f"<b>Sentiment Insight:</b> {sentiment_data.get('insight', 'No insight available.')}"
+        # f"<b>Insights:</b><br>"
+        f"{relevance_data.get('observation', 'No observation available.')}<br>"
+        # f"<b>Sentiment Insight:</b> {sentiment_data.get('insight', 'No insight available.')}"
     )
 
     # Create word table without row coloring

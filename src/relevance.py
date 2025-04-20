@@ -44,7 +44,7 @@ def extract_score_and_observation(text):
 
 # --- Main ---
 if __name__ == "__main__":
-    question = "Tell me about a time you disagreed with your boss."
+    question = "Tell me about a time you disagreed with your boss / Supervisor."
 
     # Read answer from file
     try:
