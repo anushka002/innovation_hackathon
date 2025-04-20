@@ -17,5 +17,7 @@ bash setup.sh
 3. Run the application
 
 ```
-bash run.sh
+cd src
+source ~/hack/bin/activate
+python3 frontend.py
 ```
