@@ -8,10 +8,10 @@ steps to run the code:
 git clone https://github.com/aditya-sahasrabuddhe/hackathon.git
 ```
 
-2. Download the dependancies
+2. Setup all the dependancies
 
 ```
-
+bash setup.sh
 ```
 
 3. Run the application
